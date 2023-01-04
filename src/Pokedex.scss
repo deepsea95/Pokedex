@@ -1,0 +1,88 @@
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body{
+	background-image: url('./assets/pokemon-symbol.png');
+	background-size: 150px;
+}
+
+.pokedex {
+	display: flex;
+	justify-content: center;
+
+	.navbar {
+		background-color: red;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		padding: 0.5rem;
+		width: 100%;
+		.search {
+			display: flex;
+			align-items: center;
+			.btn {
+				border-radius: 50%;
+				width: 30px;
+				height: 30px;
+				background-color: #2b2b2b;
+				border: n;
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+				cursor: pointer;
+			}
+			input {
+				border: none;
+				border-radius: 8px;
+				outline: none;
+				font-size: 16px;
+				padding: 0.5rem;
+				margin-right: 0.5rem;
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			}
+		}
+
+		img {
+			height: 60px;
+		}
+	}
+}
+
+.card {
+	border-radius: 15px;
+	border: 20px solid rgba(247, 215, 111, 0.89);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	background-color: rgb(236, 232, 232);
+	width: 25%;
+	margin: auto;
+	text-align: center;
+	margin-top: 50px;
+
+	.header{
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+	}
+
+	img {
+		height: 270px;
+		width: 80%;
+		border: 7px solid rgba(247, 215, 111, 0.89);
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6);
+		padding: 10px;
+	}
+
+	h2 {
+		font-size: 18px;
+		padding: 20px;
+	}
+
+	p {
+		
+		font-size: 15px;
+		font-weight: bold;
+		margin: 0;
+		padding: 20px;
+	}
+}
