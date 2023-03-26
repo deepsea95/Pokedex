@@ -7,27 +7,7 @@ function Pokedex() {
   const [search, setSearch] = useState("");
   const [showAllPokemon, setShowAllPokemon] = useState(true);
   const [allPokemon, setAllPokemon] = useState([]);
-
-  async function handleClick() {
-    await axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${search}`)
-      .then((response) => {
-        const pokemon = response.data;
-        setPokemon({
-          name: pokemon.name,
-          id: pokemon.id,
-          weight: pokemon.weight,
-          height: pokemon.height,
-          image: pokemon.sprites.front_default,
-          types: pokemon.types.map((t) => t.type.name).join(", "),
-          stats: pokemon.stats.find((s) => s.stat.name === "hp").base_stat,
-          moves: `${pokemon.moves[0].move.name}, ${pokemon.moves[1].move.name}`,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+  const [filteredPokemon, setFilteredPokemon] = useState([]);
 
   async function getAllPokemon() {
     await axios
@@ -41,10 +21,16 @@ function Pokedex() {
               name: pokemonData.data.name,
               id: pokemonData.data.id,
               image: pokemonData.data.sprites.front_default,
+              weight: pokemonData.data.weight,
+              height: pokemonData.data.height,
+              types: pokemonData.data.types.map((t) => t.type.name).join(", "),
+              stats: pokemonData.data.stats.find((s) => s.stat.name === "hp").base_stat,
+              moves: pokemonData.data.moves.map((move) => move.move.name).slice(0,2).join(", ")
             };
           })
         ).then((data) => {
           setAllPokemon(data);
+          setFilteredPokemon(data);
         });
       })
       .catch((error) => {
@@ -56,6 +42,20 @@ function Pokedex() {
     getAllPokemon();
   }, []);
 
+  function handleSearch(event) {
+    setSearch(event.target.value);
+    const filtered = allPokemon.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+    setFilteredPokemon(filtered);
+    setPokemon(null);
+  }
+
+  function handlePokemonClick(clickedPokemon) {
+    setPokemon(clickedPokemon);
+    setShowAllPokemon(false);
+  }
+
   return (
     <React.Fragment>
       <div className="pokedex">
@@ -65,17 +65,17 @@ function Pokedex() {
             <input
               type="text"
               value={search}
-              onChange={(e) => setSearch(e.currentTarget.value)}
+              onChange={handleSearch}
               placeholder="Search for a Pokemon..."
             />
-            <button className="btn" onClick={handleClick} />
           </div>
+          <img src={PokemonLogo} alt="Pokemon logo" className="logo" />
         </nav>
 
         {showAllPokemon && (
           <ul className="pokemon-list">
-            {allPokemon.map((pokemon) => (
-              <li key={pokemon.id}>
+            {filteredPokemon.map((pokemon) => (
+              <li key={pokemon.id} onClick={() => handlePokemonClick(pokemon)}>
                 <img src={pokemon.image} alt={pokemon.name} />
                 <p>{pokemon.name}</p>
               </li>
